@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: foodApp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/foodapp
+    username: postgres
+    password: mustaali
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+# Supabase Storage Configuration
+supabase:
+  project-url: https://lhygoymltagopxvfvdel.supabase.co
+  anon-key: ${SUPABASE_ANON_KEY}
+  service-role-key: ${SUPABASE_SERVICE_ROLE_KEY}
+
+  storage:
+    bucket-name:
+    # S3 compitable endpoints
+    s3-endpoint: https://lhygoymltagopxvfvdel.supabase.co/storage/v1/s3
+    region: ap-northeast-1
+
+aws:
+  access-key: ${SUPABASE_SERVICE_ROLE_KEY}
+  secret-key: ${SUPABASE_SERVICE_ROLE_KEY}
+  region: ap-northeast-1
+  s3:
+    bucket-name: ${SUPABASE_BUCKET_NAME}
+    endpoint: https://lhygoymltagopxvfvdel.supabase.co/storage/v1/s3
