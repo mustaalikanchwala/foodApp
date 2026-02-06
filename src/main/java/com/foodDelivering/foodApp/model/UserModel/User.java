@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +26,9 @@ public class User {
 
     @NotBlank(message = "User name is required")
     private String username;
+
+    @NotBlank(message = "Password is required")
+    private String password;
 
     @NotBlank(message = "Full Name is required")
     private String fullName;

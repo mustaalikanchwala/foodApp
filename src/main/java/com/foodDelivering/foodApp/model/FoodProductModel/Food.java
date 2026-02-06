@@ -1,14 +1,18 @@
 package com.foodDelivering.foodApp.model.FoodProductModel;
 
 import com.foodDelivering.foodApp.model.FileCategory;
+import com.foodDelivering.foodApp.model.RestaurantModel.Restaurant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
@@ -17,15 +21,18 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "foodProducts")
 public class Food {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id",nullable = false,foreignKey = @ForeignKey(name = "fk_restaurant_food"))
-    private Long restaurantId;
+    private Restaurant restaurant;
 
     @Column(nullable = false)
     @Builder.Default

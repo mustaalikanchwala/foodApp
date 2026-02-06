@@ -1,18 +1,25 @@
 package com.foodDelivering.foodApp.model.RestaurantModel;
 
+import com.foodDelivering.foodApp.model.UserModel.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "restaurants")
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +29,9 @@ public class Restaurant {
     @Column(length = 50)
     private String restaurantName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false,foreignKey = @ForeignKey(name = "fk_restaurant_user"))
-    private Long ownerId;
+    private User user;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -50,6 +57,10 @@ public class Restaurant {
 
     private Integer totalRatings;
 
+    @NotBlank
+    @Column(nullable = false)
+    private String image;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private ApproveStatus approveStatus = ApproveStatus.PENDING;
@@ -70,11 +81,11 @@ public class Restaurant {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime openingTime;
+    private LocalTime openingTime;
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime closingTime;
+    private LocalTime closingTime;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
