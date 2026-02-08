@@ -1,4 +1,4 @@
-package com.foodDelivering.foodApp.service;
+package com.foodDelivering.foodApp.service.S3Service;
 
 import com.foodDelivering.foodApp.model.FileCategory;
 import com.foodDelivering.foodApp.model.FoodProductModel.FoodCategory;

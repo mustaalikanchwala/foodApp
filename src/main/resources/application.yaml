@@ -30,3 +30,8 @@ aws:
   s3:
     bucket-name: ${SUPABASE_BUCKET_NAME}
     endpoint: https://lhygoymltagopxvfvdel.supabase.co/storage/v1/s3
+
+jwt:
+  secret: w7EgOc2xslrbFBuJEfVOrf0siZ1HerHAdeEXcTcxJQ0=
+  expiration: 86400000
+  refresh-expiration: 604800000
