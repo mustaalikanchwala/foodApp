@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -66,10 +67,10 @@ public class Address {
        LOCATION (OPTIONAL)
        ========================= */
     @Column(precision = 10, scale = 8)
-    private Double latitude;
+    private BigDecimal latitude;
 
     @Column(precision = 11, scale = 8)
-    private Double longitude;
+    private BigDecimal longitude;
 
     /* =========================
        FLAGS

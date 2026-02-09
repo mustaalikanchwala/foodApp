@@ -1,5 +1,6 @@
 package com.foodDelivering.foodApp.security;
 
+import com.foodDelivering.foodApp.exception.UserNotFoundException;
 import com.foodDelivering.foodApp.repository.UserRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with Email: "+ email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with Email: "+ email));
     }
 }

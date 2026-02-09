@@ -35,3 +35,6 @@ jwt:
   secret: w7EgOc2xslrbFBuJEfVOrf0siZ1HerHAdeEXcTcxJQ0=
   expiration: 86400000
   refresh-expiration: 604800000
+
+server:
+  port: 8080

@@ -10,8 +10,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -80,14 +84,15 @@ public class RestaurantRequest {
        LOCATION
        ========================= */
     @Column(precision = 10, scale = 8)
-    private Double latitude;
+    private BigDecimal latitude;
 
     @Column(precision = 11, scale = 8)
-    private Double longitude;
+    private BigDecimal longitude;
 
     /* =========================
        DOCUMENTS (JSON)
        ========================= */
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "JSON")
     private Map<String, String> documents; // {"fssai": "url1", "license": "url2"}
 
