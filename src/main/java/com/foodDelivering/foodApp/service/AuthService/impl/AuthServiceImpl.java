@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserResponse response = UserResponse.userTouserresponse(savedUser);
 
-        String accessToken = jwtUtil.genrerateAccessToken(savedUser.getId(), savedUser.getRole().name(),savedUser.getEmail(), savedUser.getUsername(), savedUser.getFullName());
+        String accessToken = jwtUtil.genrerateAccessToken(savedUser.getId(), savedUser.getRole().name(),savedUser.getEmail(), savedUser.getUsernameField(), savedUser.getFullName());
 
         String refreshToken = jwtUtil.genrerateRefreshToken(savedUser.getId(),savedUser.getEmail());
 
@@ -83,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserResponse response = UserResponse.userTouserresponse(user);
 
-        String accessToken = jwtUtil.genrerateAccessToken(user.getId(), user.getRole().name(),user.getEmail(), user.getUsername(), user.getFullName());
+        String accessToken = jwtUtil.genrerateAccessToken(user.getId(), user.getRole().name(),user.getEmail(), user.getUsernameField(), user.getFullName());
 
         String refreshToken = jwtUtil.genrerateRefreshToken(user.getId(),user.getEmail());
 

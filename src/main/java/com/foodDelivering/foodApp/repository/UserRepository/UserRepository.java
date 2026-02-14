@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +22,13 @@ public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByEmail(@NotBlank(message = "Email is required") @Email(message = "Invalid email format") String email);
 
     Optional<UserDetails> findByEmail(String email);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :email AND u.id != :id ")
+    boolean existsByEmailAndIdNot(@Param("email") String email,@Param("id") Long id);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.mobileNumber = :mobileNumber AND u.id != :id ")
+    boolean existsByMobileNumberAndIdNot(@Param("mobileNumber") String newMobileNumber,@Param("id") Long id);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.username = :username AND u.id != :id")
+    boolean existsByUsernameAndIdNot(@Param("username") String newUserName,@Param("id") Long id);
 }

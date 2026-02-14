@@ -25,7 +25,7 @@ public record UserResponse(
                 .email(user.getEmail())
                 .id(user.getId())
                 .fullName(user.getFullName())
-                .username(user.getUsername())
+                .username(user.getUsernameField())
                 .mobileNumber(user.getMobileNumber())
                 .role(user.getRole())
                 .profileImage(user.getProfileImage())

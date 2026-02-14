@@ -103,9 +103,8 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails){
-        final String email = extractEmail(token);
-        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token){
+        return !isTokenExpired(token);
     }
 
     // Get expiration time in seconds

@@ -1,20 +1,22 @@
 package com.foodDelivering.foodApp.controller;
 
+import com.foodDelivering.foodApp.dto.UpdateProfileRequest;
 import com.foodDelivering.foodApp.dto.UserResponse;
 import com.foodDelivering.foodApp.model.UserModel.User;
 import com.foodDelivering.foodApp.service.UserService.impl.UserServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
+@Slf4j
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -23,5 +25,20 @@ public class UserController {
     public ResponseEntity<UserResponse> getCurrentProfile(@AuthenticationPrincipal User user){
         return ResponseEntity.ok(userService.getUserProfile(user.getId()));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getUserProfile(userId));
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<UserResponse> updateProfile(
+            @AuthenticationPrincipal User user,
+            @Valid @RequestBody UpdateProfileRequest request) {
+
+        UserResponse response = userService.updateProfile(user.getId(), request);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

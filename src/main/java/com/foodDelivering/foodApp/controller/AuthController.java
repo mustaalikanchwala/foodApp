@@ -22,7 +22,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.registerUser(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> registerUser(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
     @PostMapping("/refresh")
