@@ -12,4 +12,8 @@ public interface UserService {
     UserResponse updateProfile(Long id, @Valid UpdateProfileRequest request);
 
     boolean changePassword(Long id, @Valid ChangePasswordRequest request);
+
+    boolean deactivateAccount(Long id);
+
+    boolean isUserActive(Long id);
 }

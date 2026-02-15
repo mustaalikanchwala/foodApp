@@ -59,8 +59,30 @@ public class UserController {
                         "message","Failed To Change Password"
                 ));
             }
+    }
 
+    @DeleteMapping("/deactivate")
+    public ResponseEntity<Map<String, String>> deactivateAccount(@AuthenticationPrincipal User user) {
+        boolean isDeactive = userService.deactivateAccount(user.getId());
+        if(isDeactive){
+            return ResponseEntity.ok(Map.of(
+                    "message", "Account deactivated successfully. You can no longer login."
+            ));
+        }else{
+            return ResponseEntity.ok(Map.of(
+                    "message", "Account Deactivation Fail. Plz try again."
+            ));
+        }
+    }
 
+    @GetMapping("/status")
+    public ResponseEntity<Map<String,Object>> getUserStatus(@AuthenticationPrincipal User user){
+        boolean isActive = userService.isUserActive(user.getId());
+        return ResponseEntity.ok(Map.of(
+                "userId",user.getId(),
+                "email",user.getEmail(),
+                "isActive",user.getIsActive()
+        ));
     }
 
 

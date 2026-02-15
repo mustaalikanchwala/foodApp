@@ -3,6 +3,7 @@ package com.foodDelivering.foodApp.service.UserService.impl;
 import com.foodDelivering.foodApp.dto.ChangePasswordRequest;
 import com.foodDelivering.foodApp.dto.UpdateProfileRequest;
 import com.foodDelivering.foodApp.dto.UserResponse;
+import com.foodDelivering.foodApp.exception.AccountDeactivateException;
 import com.foodDelivering.foodApp.exception.InvalidPasswordException;
 import com.foodDelivering.foodApp.exception.UpdateFieldsAreSameExcpetion;
 import com.foodDelivering.foodApp.exception.UserNotFoundException;
@@ -15,6 +16,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Locale;
 
@@ -124,6 +126,31 @@ public class UserServiceImpl implements UserService {
         }
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean deactivateAccount(Long id) {
+        log.info("Deactivating account for user ID: {}", id);
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+
+        if(!user.getIsActive()){
+            throw new AccountDeactivateException("Account is already deactivated");
+        }
+
+        user.setIsActive(false);
+        User user1 = userRepository.save(user);
+
+        if(user1 == null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isUserActive(Long id) {
+        return userRepository.findById(id).map(User::getIsActive).orElse(false);
     }
 
 
