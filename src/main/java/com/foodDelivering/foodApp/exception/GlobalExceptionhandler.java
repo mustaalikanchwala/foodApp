@@ -29,6 +29,17 @@ public class GlobalExceptionhandler {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
+        @ExceptionHandler(InvalidPasswordException.class)
+        public ResponseEntity<ErrorResponse> handleInvalidPassException(InvalidPasswordException ex) {
+            ErrorResponse error = ErrorResponse.builder()
+                    .timestamp(LocalDateTime.now())
+                    .status(HttpStatus.UNAUTHORIZED.value())
+                    .error("Unauthorized")
+                    .message(ex.getMessage())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        }
 
         @ExceptionHandler(InvalidTokenException.class)
         public ResponseEntity<ErrorResponse> handleInvalidToken(InvalidTokenException ex) {

@@ -1,7 +1,9 @@
 package com.foodDelivering.foodApp.service.UserService.impl;
 
+import com.foodDelivering.foodApp.dto.ChangePasswordRequest;
 import com.foodDelivering.foodApp.dto.UpdateProfileRequest;
 import com.foodDelivering.foodApp.dto.UserResponse;
+import com.foodDelivering.foodApp.exception.InvalidPasswordException;
 import com.foodDelivering.foodApp.exception.UpdateFieldsAreSameExcpetion;
 import com.foodDelivering.foodApp.exception.UserNotFoundException;
 import com.foodDelivering.foodApp.model.UserModel.User;
@@ -10,6 +12,7 @@ import com.foodDelivering.foodApp.service.UserService.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,10 @@ import java.util.Locale;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Override
+    @Transactional(readOnly = true)
     public @Nullable UserResponse getUserProfile(Long id) {
         return UserResponse.userTouserresponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not Found")));
     }
@@ -83,6 +89,41 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserResponse.userTouserresponse(userRepository.save(user));
+    }
+
+    @Override
+    @Transactional
+    public boolean changePassword(Long id, ChangePasswordRequest request) {
+        log.info("Changing password for user ID: {}", id);
+
+        // Validate new password matches confirmation
+        if (!request.newPassword().equals(request.confirmPassword())) {
+            throw new InvalidPasswordException("New password and confirmation do not match");
+        }
+
+        // Load user
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+
+        if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())){
+            log.error("Invalid current password for user ID: {}", id);
+            throw new InvalidPasswordException("Current password is incorrect");
+        }
+
+        // Check if new password is same as current
+        if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("New password must be different from current password");
+        }
+
+        String hashPassword = passwordEncoder.encode(request.newPassword());
+        user.setPassword(hashPassword);
+        User user1 = userRepository.save(user);
+
+        if(user1 == null){
+            return false;
+        }
+
+        return true;
     }
 
 

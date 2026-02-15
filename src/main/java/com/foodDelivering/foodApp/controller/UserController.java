@@ -1,5 +1,6 @@
 package com.foodDelivering.foodApp.controller;
 
+import com.foodDelivering.foodApp.dto.ChangePasswordRequest;
 import com.foodDelivering.foodApp.dto.UpdateProfileRequest;
 import com.foodDelivering.foodApp.dto.UserResponse;
 import com.foodDelivering.foodApp.model.UserModel.User;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -38,6 +41,26 @@ public class UserController {
 
         UserResponse response = userService.updateProfile(user.getId(), request);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<Map<String,String>> changePass(
+            @AuthenticationPrincipal User user,
+            @Valid @RequestBody ChangePasswordRequest request) {
+
+            boolean isChange = userService.changePassword(user.getId(),request);
+
+            if(isChange){
+                return ResponseEntity.ok(Map.of(
+                        "message","Password Change Successfully"
+                ));
+            }else{
+                return ResponseEntity.ok(Map.of(
+                        "message","Failed To Change Password"
+                ));
+            }
+
+
     }
 
 
